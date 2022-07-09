@@ -1,24 +1,19 @@
 import jwt
+from app.core import security
+from app.db import models, schemas, session
+from app.db.crud import create_user, get_user_by_email
 from fastapi import Depends, HTTPException, status
 from jwt import PyJWTError
 
-from app.db import models, schemas, session
-from app.db.crud import get_user_by_email, create_user
-from app.core import security
 
-
-async def get_current_user(
-    db=Depends(session.get_db), token: str = Depends(security.oauth2_scheme)
-):
+async def get_current_user(db=Depends(session.get_db), token: str = Depends(security.oauth2_scheme)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
-        payload = jwt.decode(
-            token, security.SECRET_KEY, algorithms=[security.ALGORITHM]
-        )
+        payload = jwt.decode(token, security.SECRET_KEY, algorithms=[security.ALGORITHM])
         email: str = payload.get("sub")
         if email is None:
             raise credentials_exception
@@ -44,9 +39,7 @@ async def get_current_active_superuser(
     current_user: models.User = Depends(get_current_user),
 ) -> models.User:
     if not current_user.is_superuser:
-        raise HTTPException(
-            status_code=403, detail="The user doesn't have enough privileges"
-        )
+        raise HTTPException(status_code=403, detail="The user doesn't have enough privileges")
     return current_user
 
 
