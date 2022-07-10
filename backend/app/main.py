@@ -21,7 +21,7 @@ async def db_session_middleware(request: Request, call_next):
 
 @app.get("/api/v1")
 async def root():
-    return {"message": "Hello Worl"}
+    return {"message": "Hello World"}
 
 
 @app.get("/api/v1/task")
