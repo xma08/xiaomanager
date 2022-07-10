@@ -1,5 +1,4 @@
 import uvicorn
-from app import tasks
 from app.api.api_v1.routers.auth import auth_router
 from app.api.api_v1.routers.users import users_router
 from app.core import config

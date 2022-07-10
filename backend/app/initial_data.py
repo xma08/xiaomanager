@@ -2,7 +2,7 @@
 
 from app.db.crud import create_user
 from app.db.schemas import UserCreate
-from app.db.session import SessionLocal, get_db
+from app.db.session import SessionLocal
 
 
 def init() -> None:
