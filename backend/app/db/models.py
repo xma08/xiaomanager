@@ -1,9 +1,8 @@
-from sqlalchemy import (
-    Boolean, Column, Integer, String, 
-    ForeignKey, Enum, DateTime,
-)
-from sqlalchemy.sql import func
 import enum
+
+from sqlalchemy import Boolean, Column, DateTime, Enum, ForeignKey, Integer, String
+from sqlalchemy.sql import func
+
 from .session import Base
 
 
@@ -20,8 +19,8 @@ class User(Base):
 
 
 class CardType(str, enum.Enum):
-    CREDIT_CARD = 'credit_card'
-    DEBIT_CARD = 'debit_card'
+    CREDIT_CARD = "credit_card"
+    DEBIT_CARD = "debit_card"
 
 
 class Card(Base):
