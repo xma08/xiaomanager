@@ -1,7 +1,10 @@
-import os
+import sys
 from logging.config import fileConfig
 
 from alembic import context
+
+sys.path.insert(0, ".")
+from app.core.config import SQLALCHEMY_DATABASE_URI
 from app.db.models import Base
 from sqlalchemy import engine_from_config, pool
 
@@ -26,7 +29,7 @@ target_metadata = Base.metadata
 
 
 def get_url():
-    return os.getenv("DATABASE_URL")
+    return SQLALCHEMY_DATABASE_URI
 
 
 def run_migrations_offline():
