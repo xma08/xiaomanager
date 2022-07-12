@@ -35,3 +35,25 @@ class Card(Base):
     csv_code = Column(Integer, nullable=False)
     card_type = Column(Enum(CardType), nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class RewardType(str, enum.Enum):
+    GROCERY = "grocery"
+    ENTERTAINMENT = "entertainment"
+    GAS = "gas"
+    TRAVEL = "travel"
+    EDUCATION = "education"
+    RESTAURANT = "restaurant"
+
+
+class Reward(Base):
+    __tablename__ = "reward"
+
+    id = Column(Integer, primary_key=True, index=True)
+    card_id = Column(Integer, ForeignKey("card.id"))
+    name = Column(String)
+    discount = Column(Integer)
+    category = Column(Enum(RewardType), nullable=False)
+    valid_from = Column(DateTime, nullable=False)
+    valid_to = Column(DateTime, nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
