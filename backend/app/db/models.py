@@ -68,10 +68,13 @@ class Reward(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 
-class CardCategory(str, enum.Enum):
-    VISA = "visa"
-    MASTERCARD = "mastercard"
-    BOA = "boa"
+class TransactionCategory(str, enum.Enum):
+    GROCERY = "grocery"
+    ENTERTAINMENT = "entertainment"
+    GAS = "gas"
+    TRAVEL = "travel"
+    EDUCATION = "education"
+    RESTAURANT = "restaurant"
 
 
 class Transaction(Base):
@@ -80,6 +83,6 @@ class Transaction(Base):
     id = Column(Integer, primary_key=True, index=True)
     card_id = Column(Integer, ForeignKey("card.id"))
     price = Column(Float, nullable=False)
-    category = Column(Enum(CardCategory), nullable=False)
+    category = Column(Enum(TransactionCategory), nullable=False)
     transaction_at = Column(DateTime(timezone=True), server_default=func.now())
     created_at = Column(DateTime(timezone=True), server_default=func.now())

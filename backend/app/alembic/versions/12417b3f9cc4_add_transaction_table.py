@@ -1,15 +1,15 @@
 """add transaction table
 
-Revision ID: cbfcf4e4c4c4
+Revision ID: 12417b3f9cc4
 Revises: 894a59016283
-Create Date: 2022-07-12 20:51:43.365723-07:00
+Create Date: 2022-07-12 21:00:24.534355-07:00
 
 """
 import sqlalchemy as sa
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision = "cbfcf4e4c4c4"
+revision = "12417b3f9cc4"
 down_revision = "894a59016283"
 branch_labels = None
 depends_on = None
@@ -22,7 +22,11 @@ def upgrade():
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("card_id", sa.Integer(), nullable=True),
         sa.Column("price", sa.Float(), nullable=False),
-        sa.Column("category", sa.Enum("VISA", "MASTERCARD", "BOA", name="cardcategory"), nullable=False),
+        sa.Column(
+            "category",
+            sa.Enum("GROCERY", "ENTERTAINMENT", "GAS", "TRAVEL", "EDUCATION", "RESTAURANT", name="transactioncategory"),
+            nullable=False,
+        ),
         sa.Column("transaction_at", sa.DateTime(timezone=True), server_default=sa.text("now()"), nullable=True),
         sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.text("now()"), nullable=True),
         sa.ForeignKeyConstraint(
