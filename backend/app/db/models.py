@@ -1,6 +1,15 @@
 import enum
 
-from sqlalchemy import Boolean, Column, DateTime, Enum, ForeignKey, Integer, String
+from sqlalchemy import (
+    Boolean,
+    Column,
+    DateTime,
+    Enum,
+    Float,
+    ForeignKey,
+    Integer,
+    String,
+)
 from sqlalchemy.sql import func
 
 from .session import Base
@@ -56,4 +65,21 @@ class Reward(Base):
     category = Column(Enum(RewardType), nullable=False)
     valid_from = Column(DateTime, nullable=False)
     valid_to = Column(DateTime, nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class CardCategory(str, enum.Enum):
+    VISA = "visa"
+    MASTERCARD = "mastercard"
+    BOA = "boa"
+
+
+class Transaction(Base):
+    __tablename__ = "transaction"
+
+    id = Column(Integer, primary_key=True, index=True)
+    card_id = Column(Integer, ForeignKey("card.id"))
+    price = Column(Float, nullable=False)
+    category = Column(Enum(CardCategory), nullable=False)
+    transaction_at = Column(DateTime(timezone=True), server_default=func.now())
     created_at = Column(DateTime(timezone=True), server_default=func.now())
