@@ -1,6 +1,7 @@
 import uvicorn
 from app.api.api_v1.routers.auth import auth_router
 from app.api.api_v1.routers.cards import cards_router
+from app.api.api_v1.routers.rewards import rewards_router
 from app.api.api_v1.routers.users import users_router
 from app.core import config
 from app.core.auth import get_current_active_user
@@ -43,6 +44,12 @@ app.include_router(
     cards_router,
     prefix="/api/v1",
     tags=["cards"],
+    dependencies=[Depends(get_current_active_user)],
+)
+app.include_router(
+    rewards_router,
+    prefix="/api/v1",
+    tags=["rewards"],
     dependencies=[Depends(get_current_active_user)],
 )
 app.include_router(auth_router, prefix="/api", tags=["auth"])
