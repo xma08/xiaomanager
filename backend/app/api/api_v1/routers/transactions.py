@@ -1,6 +1,7 @@
 from datetime import date
 
 from app.core.auth import get_current_active_user
+from app.db.models import TransactionCategory
 from app.db.schema.transaction import TransactionIn, TransactionOut
 from app.db.service.transaction import create_transaction, get_total_amount
 from app.db.session import get_db
@@ -26,11 +27,12 @@ async def transaction_create(
 async def total_amount(
     start_date: date = None,
     end_date: date = None,
+    category: TransactionCategory = None,
     db=Depends(get_db),
     current_user=Depends(get_current_active_user),
 ):
     """
     get total amount
     """
-    amount = get_total_amount(db, start_date=start_date, end_date=end_date)
+    amount = get_total_amount(db, start_date=start_date, end_date=end_date, category=category)
     return "{:.2f}".format(amount)
