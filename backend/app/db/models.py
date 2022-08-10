@@ -10,6 +10,7 @@ from sqlalchemy import (
     Integer,
     String,
 )
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 from .session import Base
@@ -44,6 +45,9 @@ class Card(Base):
     csv_code = Column(Integer, nullable=False)
     card_type = Column(Enum(CardType), nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    transactions = relationship("Transaction", backref="card")
+    rewards = relationship("Reward", backref="card")
 
 
 class RewardType(str, enum.Enum):
