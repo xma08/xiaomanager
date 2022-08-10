@@ -3,7 +3,11 @@ from datetime import date
 from app.core.auth import get_current_active_user
 from app.db.models import TransactionCategory
 from app.db.schema.transaction import TransactionIn, TransactionOut
-from app.db.service.transaction import create_transaction, get_total_amount
+from app.db.service.transaction import (
+    create_transaction,
+    get_total_amount,
+    get_total_rewards,
+)
 from app.db.session import get_db
 from fastapi import APIRouter, Depends, Request
 
@@ -35,4 +39,18 @@ async def total_amount(
     get total amount
     """
     amount = get_total_amount(db, start_date=start_date, end_date=end_date, category=category)
+    return "{:.2f}".format(amount)
+
+
+@r.get("/total_rewards")
+async def total_transaction_reward(
+    start_date: date = None,
+    end_date: date = None,
+    db=Depends(get_db),
+    current_user=Depends(get_current_active_user),
+):
+    """
+    get total rewards
+    """
+    amount = get_total_rewards(db, start_date=start_date, end_date=end_date)
     return "{:.2f}".format(amount)

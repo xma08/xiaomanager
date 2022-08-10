@@ -1,3 +1,5 @@
+import logging
+
 import uvicorn
 from app.api.api_v1.routers.auth import auth_router
 from app.api.api_v1.routers.cards import cards_router
@@ -12,6 +14,14 @@ from fastapi import Depends, FastAPI
 from starlette.requests import Request
 
 app = FastAPI(title=config.PROJECT_NAME, docs_url="/api/docs", openapi_url="/api")
+
+
+# setup loggers
+logging.config.fileConfig("app/logging.conf", disable_existing_loggers=False)
+
+# get root logger
+logger = logging.getLogger(__name__)  # the __name__ resolve to "main" since we are at the root of the project.
+# This will get the root logger since no logger in the configuration has this name.
 
 
 @app.middleware("http")
